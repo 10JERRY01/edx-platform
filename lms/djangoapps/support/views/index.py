@@ -51,7 +51,7 @@ SUPPORT_INDEX_URLS = [
     {
         "url": reverse_lazy("support:program_enrollments_inspector"),
         "name": _("Program Enrollments Inspector Tool"),
-        "description": _("The tool to find information related to a Learner's Program Enrollment information"),
+        "description": _("Find information related to a learner's program enrollments"),
     },
 ]
 

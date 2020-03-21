@@ -27,7 +27,7 @@ const renderUserSection = userObj => (
         </span>: {userObj.sso.provider}</div>
       </div>
     ) : (
-      <div> There is no Single Signed On record associated with this user!</div>)}
+      <div> There is no Single Sign On record associated with this user!</div>)}
     <hr />
   </div>
 );
@@ -103,14 +103,14 @@ export const ProgramEnrollmentsInspectorPage = props => (
       renderEnrollmentsSection(props.learnerInfo.enrollments)}
     <form method="get">
       <h2>Search For A Masters Learner Below</h2>
-      {props.errors.map(errorItem => (
+      {props.error && (
         <StatusAlert
           open
           dismissible={false}
           alertType="danger"
-          dialog={errorItem}
+          dialog={props.error}
         />
-      ))}
+      )}
       <div key="edX_accounts">
         <InputText
           name="edx_user"
@@ -137,7 +137,7 @@ export const ProgramEnrollmentsInspectorPage = props => (
 );
 
 ProgramEnrollmentsInspectorPage.propTypes = {
-  errors: PropTypes.arrayOf(PropTypes.string),
+  error: PropTypes.string,
   learnerInfo: PropTypes.shape({
     user: PropTypes.shape({
       username: PropTypes.string,
@@ -180,7 +180,7 @@ ProgramEnrollmentsInspectorPage.propTypes = {
 };
 
 ProgramEnrollmentsInspectorPage.defaultProps = {
-  errors: [],
+  error: '',
   learnerInfo: {},
   orgKeys: [],
 };

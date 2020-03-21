@@ -134,28 +134,27 @@ class ProgramEnrollmentsInspectorView(View):
         Search the data store for information about ProgramEnrollment and
         SSO linkage with the user.
         """
-        errors = []
+        search_error = ''
         edx_username_or_email = request.GET.get('edx_user', '').strip()
         org_key = request.GET.get('org_key', '').strip()
         external_user_key = request.GET.get('external_user_key', '').strip()
         learner_program_enrollments = {}
         if edx_username_or_email:
-            learner_program_enrollments, error = self._get_account_info(edx_username_or_email)
-            if error:
-                errors.append(error)
+            learner_program_enrollments, search_error = self._get_account_info(edx_username_or_email)
         elif org_key and external_user_key:
             learner_program_enrollments = self._get_external_user_info(
                 external_user_key,
                 org_key
             )
             if not learner_program_enrollments:
-                errors.append(
-                    'No user found for external key {} for institution {}'.format(
-                        external_user_key, org_key
-                    )
+                search_error = 'No user found for external key {} for institution {}'.format(
+                    external_user_key, org_key
                 )
-        elif org_key and not external_user_key:
-            errors.append(
+        elif not org_key and not external_user_key:
+            # This is initial rendering state. 
+            pass
+        else:
+            search_error = (
                 "To perform a search, you must provide either the student's "
                 "(a) edX username, "
                 "(b) email address associated with their edX account, or "
@@ -165,7 +164,7 @@ class ProgramEnrollmentsInspectorView(View):
         return render_to_response(
             self.CONSOLE_TEMPLATE_PATH,
             {
-                'errors': errors,
+                'error': search_error,
                 'learner_program_enrollments': learner_program_enrollments,
                 'org_keys': self._get_org_keys_with_idp(),
             }

@@ -812,23 +812,28 @@ class ProgramEnrollmentsInspectorViewTests(SupportViewTestCase):
         render_call_dict = mocked_render.call_args[0][1]
         assert expected_info == render_call_dict['learner_program_enrollments']
 
+    @ddt.data(
+        ('', 'test_org'),
+        ('bad_key', '')
+    )
+    @ddt.unpack
     @patch_render
-    def test_search_no_external_user_key(self, mocked_render):
+    def test_search_no_external_user_key(self, user_key, org_key, mocked_render):
         self.client.get(self.url, data={
-            'external_user_key': '',
-            'org_key': 'test_org',
+            'external_user_key': user_key,
+            'org_key': org_key,
         })
 
-        expected_errors = [
+        expected_error = (
             "To perform a search, you must provide either the student's "
             "(a) edX username, "
             "(b) email address associated with their edX account, or "
             "(c) Identity-providing institution and external key!"
-        ]
+        )
 
         render_call_dict = mocked_render.call_args[0][1]
         assert {} == render_call_dict['learner_program_enrollments']
-        assert expected_errors == render_call_dict['errors']
+        assert expected_error == render_call_dict['error']
 
     @patch_render
     def test_search_external_user_not_connected(self, mocked_render):
@@ -859,10 +864,8 @@ class ProgramEnrollmentsInspectorViewTests(SupportViewTestCase):
             'org_key': self.org_key_list[0],
         })
 
-        expected_errors = [
-            'No user found for external key {} for institution {}'.format(
-                external_user_key, self.org_key_list[0]
-            )
-        ]
+        expected_error = 'No user found for external key {} for institution {}'.format(
+            external_user_key, self.org_key_list[0]
+        )
         render_call_dict = mocked_render.call_args[0][1]
-        assert expected_errors == render_call_dict['errors']
+        assert expected_error == render_call_dict['error']
