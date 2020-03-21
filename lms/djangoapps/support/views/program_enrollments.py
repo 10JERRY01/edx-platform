@@ -136,7 +136,7 @@ class ProgramEnrollmentsInspectorView(View):
         """
         errors = []
         edx_username_or_email = request.GET.get('edx_user', '').strip()
-        org_key = request.GET.get('IdPSelect', '').strip()
+        org_key = request.GET.get('org_key', '').strip()
         external_user_key = request.GET.get('external_user_key', '').strip()
         learner_program_enrollments = {}
         if edx_username_or_email:

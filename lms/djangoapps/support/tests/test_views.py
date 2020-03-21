@@ -801,7 +801,7 @@ class ProgramEnrollmentsInspectorViewTests(SupportViewTestCase):
         id_verified = self._construct_id_verification(created_user)
         self.client.get(self.url, data={
             'external_user_key': self.external_user_key,
-            'IdPSelect': self.org_key_list[0]
+            'org_key': self.org_key_list[0]
         })
         expected_info = {
             'user': expected_user_info,
@@ -816,7 +816,7 @@ class ProgramEnrollmentsInspectorViewTests(SupportViewTestCase):
     def test_search_no_external_user_key(self, mocked_render):
         self.client.get(self.url, data={
             'external_user_key': '',
-            'IdPSelect': 'test_org',
+            'org_key': 'test_org',
         })
 
         expected_errors = [
@@ -839,7 +839,7 @@ class ProgramEnrollmentsInspectorViewTests(SupportViewTestCase):
         )
         self.client.get(self.url, data={
             'external_user_key': self.external_user_key,
-            'IdPSelect': self.org_key_list[0]
+            'org_key': self.org_key_list[0]
         })
         expected_info = {
             'user': {
@@ -856,7 +856,7 @@ class ProgramEnrollmentsInspectorViewTests(SupportViewTestCase):
         external_user_key = 'not_in_system'
         self.client.get(self.url, data={
             'external_user_key': external_user_key,
-            'IdPSelect': self.org_key_list[0],
+            'org_key': self.org_key_list[0],
         })
 
         expected_errors = [

@@ -2,22 +2,29 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, InputText, StatusAlert, InputSelect } from '@edx/paragon';
 
-
+/*
+To improve the UI here, we should move this tool to the support Micro-Frontend.
+This work will be groomed and covered by MST-180
+*/
 const renderUserSection = userObj => (
   <div>
     <h3>
       edX account Info
     </h3>
-    <div><span>Username: </span> {userObj.username}</div>
-    <div><span>Email: </span> {userObj.email}</div>
+    <div><span className="font-weight-bold">Username </span>: {userObj.username}</div>
+    <div><span className="font-weight-bold">Email </span>: {userObj.email}</div>
     {userObj.external_user_key && (
-      <div><span>External User Key</span>: {userObj.external_user_key}</div>
+      <div><span className="font-weight-bold">
+        External User Key
+      </span>: {userObj.external_user_key}</div>
     )}
     {userObj.sso ? (
       <div>
         <h4>Single Sign On Record:</h4>
-        <div><span>UID: </span>{userObj.sso.uid}</div>
-        <div><span>Identity Provider: </span>{userObj.sso.provider}</div>
+        <div><span className="font-weight-bold">UID: </span>{userObj.sso.uid}</div>
+        <div><span className="font-weight-bold">
+          Identity Provider
+        </span>: {userObj.sso.provider}</div>
       </div>
     ) : (
       <div> There is no Single Signed On record associated with this user!</div>)}
@@ -112,8 +119,8 @@ export const ProgramEnrollmentsInspectorPage = props => (
       </div>
       <div key="school_accounts">
         <InputSelect
-          name="IdPSelect"
-          label="Learner Account Providers"
+          name="org_key"
+          label="Identity-providing institution"
           value="Select One"
           options={
             props.orgKeys
