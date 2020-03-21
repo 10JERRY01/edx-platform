@@ -587,7 +587,9 @@ class ProgramEnrollmentsInspectorViewTests(SupportViewTestCase):
     def test_initial_rendering(self):
         response = self.client.get(self.url)
         content = six.text_type(response.content, encoding='utf-8')
-        expected_organization_serialized = '"orgKeys": {}'.format(json.dumps(self.org_key_list))
+        expected_organization_serialized = '"orgKeys": {}'.format(
+            json.dumps(sorted(self.org_key_list))
+        )
         assert response.status_code == 200
         assert expected_organization_serialized in content
         assert '"learnerInfo": {}' in content
@@ -609,11 +611,9 @@ class ProgramEnrollmentsInspectorViewTests(SupportViewTestCase):
                 uid='{0}:{1}'.format(org_key, external_user_key),
                 provider='tpa-saml'
             )
-            user_info['external_user_key'] = external_user_key
-            user_info['sso'] = {
-                'uid': user_social_auth.uid,
-                'provider': user_social_auth.provider
-            }
+            user_info['sso_list'] = [{
+                'uid': user_social_auth.uid
+            }]
         return user, user_info
 
     def _construct_enrollments(self, program_uuids, course_ids, external_user_key, edx_user=None):
@@ -678,7 +678,8 @@ class ProgramEnrollmentsInspectorViewTests(SupportViewTestCase):
             created_user
         )
         self.client.get(self.url, data={
-            'edx_user': created_user.username
+            'edx_user': created_user.username,
+            'org_key': self.org_key_list[0]
         })
         expected_info = {
             'user': expected_user_info,
@@ -693,7 +694,8 @@ class ProgramEnrollmentsInspectorViewTests(SupportViewTestCase):
     def test_search_username_user_not_connected(self, mocked_render):
         created_user, expected_user_info = self._construct_user('user_not_connected')
         self.client.get(self.url, data={
-            'edx_user': created_user.email
+            'edx_user': created_user.email,
+            'org_key': self.org_key_list[0]
         })
         expected_info = {
             'user': expected_user_info,
@@ -711,7 +713,8 @@ class ProgramEnrollmentsInspectorViewTests(SupportViewTestCase):
             self.external_user_key
         )
         self.client.get(self.url, data={
-            'edx_user': created_user.email
+            'edx_user': created_user.email,
+            'org_key': self.org_key_list[0]
         })
         expected_info = {
             'user': expected_user_info,
@@ -735,7 +738,8 @@ class ProgramEnrollmentsInspectorViewTests(SupportViewTestCase):
             created_user,
         )
         self.client.get(self.url, data={
-            'edx_user': created_user.email
+            'edx_user': created_user.email,
+            'org_key': self.org_key_list[0]
         })
         expected_info = {
             'user': expected_user_info,
@@ -757,7 +761,8 @@ class ProgramEnrollmentsInspectorViewTests(SupportViewTestCase):
             self.external_user_key,
         )
         self.client.get(self.url, data={
-            'edx_user': created_user.email
+            'edx_user': created_user.email,
+            'org_key': self.org_key_list[0]
         })
         expected_info = {
             'user': expected_user_info,
@@ -779,7 +784,8 @@ class ProgramEnrollmentsInspectorViewTests(SupportViewTestCase):
         }
 
         self.client.get(self.url, data={
-            'edx_user': created_user.email
+            'edx_user': created_user.email,
+            'org_key': self.org_key_list[0]
         })
 
         render_call_dict = mocked_render.call_args[0][1]

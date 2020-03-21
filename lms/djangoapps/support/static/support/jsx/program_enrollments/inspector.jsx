@@ -18,16 +18,18 @@ const renderUserSection = userObj => (
           : {userObj.external_user_key}
         </div>
       )}
-      {userObj.sso ? (
-        <div className="ml-5">
-          <h4>Single Sign On Record</h4>
-          <div><span className="font-weight-bold">UID</span>: {userObj.sso.uid}</div>
-          <div>
-            <span className="font-weight-bold">Identity Provider</span>: {userObj.sso.provider}
-          </div>
+      {userObj.sso_list ? (
+        <div>
+          <h4>List of Single Sign On Records: </h4>
+          <ul>
+            {userObj.sso_list.map(sso => (
+              <li>{sso.uid}</li>
+            ))}
+          </ul>
         </div>
       ) : (
-        <div> There is no Single Sign On record associated with this user!</div>)}
+        <div> There is no Single Sign On record associated with this user!</div>
+      )}
     </div>
     <hr />
   </div>
