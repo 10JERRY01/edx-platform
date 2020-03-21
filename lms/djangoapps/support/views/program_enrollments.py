@@ -159,7 +159,7 @@ class ProgramEnrollmentsInspectorView(View):
                     external_user_key, org_key
                 )
         elif not org_key and not external_user_key:
-            # This is initial rendering state. 
+            # This is initial rendering state.
             pass
         else:
             search_error = (
@@ -181,7 +181,7 @@ class ProgramEnrollmentsInspectorView(View):
     def _get_org_keys_and_idps(self):
         """
         From our Third_party_auth models, return a dictionary of
-        of organizations keys and their correspondingactive and configured SAMLProviders 
+        of organizations keys and their correspondingactive and configured SAMLProviders
         """
         saml_providers = SAMLProviderConfig.objects.current_set().filter(
             enabled=True,
