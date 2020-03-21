@@ -8,26 +8,27 @@ This work will be groomed and covered by MST-180
 */
 const renderUserSection = userObj => (
   <div>
-    <h3>
-      edX account Info
-    </h3>
-    <div><span className="font-weight-bold">Username </span>: {userObj.username}</div>
-    <div><span className="font-weight-bold">Email </span>: {userObj.email}</div>
-    {userObj.external_user_key && (
-      <div><span className="font-weight-bold">
-        External User Key
-      </span>: {userObj.external_user_key}</div>
-    )}
-    {userObj.sso ? (
-      <div>
-        <h4>Single Sign On Record:</h4>
-        <div><span className="font-weight-bold">UID: </span>{userObj.sso.uid}</div>
-        <div><span className="font-weight-bold">
-          Identity Provider
-        </span>: {userObj.sso.provider}</div>
-      </div>
-    ) : (
-      <div> There is no Single Sign On record associated with this user!</div>)}
+    <h3>edX account Info</h3>
+    <div className="ml-5">
+      <div><span className="font-weight-bold">Username</span>: {userObj.username}</div>
+      <div><span className="font-weight-bold">Email</span>: {userObj.email}</div>
+      {userObj.external_user_key && (
+        <div>
+          <span className="font-weight-bold">External User Key</span>
+          : {userObj.external_user_key}
+        </div>
+      )}
+      {userObj.sso ? (
+        <div className="ml-5">
+          <h4>Single Sign On Record</h4>
+          <div><span className="font-weight-bold">UID</span>: {userObj.sso.uid}</div>
+          <div>
+            <span className="font-weight-bold">Identity Provider</span>: {userObj.sso.provider}
+          </div>
+        </div>
+      ) : (
+        <div> There is no Single Sign On record associated with this user!</div>)}
+    </div>
     <hr />
   </div>
 );
@@ -35,14 +36,20 @@ const renderUserSection = userObj => (
 
 const renderVerificationSection = verificationStatus => (
   <div>
-    <h3>
-      ID Verification
-    </h3>
-    <div><span>Status: </span> {verificationStatus.status}</div>
-    <div><span>Verification Error: </span> {verificationStatus.error}</div>
-    <div><span>Should Display Verification: </span> {verificationStatus.should_display}</div>
-    <div><span>Verification Expiration Date: </span>
-      {verificationStatus.verification_expiry}
+    <h3>ID Verification</h3>
+    <div className="ml-5">
+      <div><span className="font-weight-bold">Status</span>: {verificationStatus.status}</div>
+      {verificationStatus.error && (
+        <div>
+          <span className="font-weight-bold">Verification Error</span>: {verificationStatus.error}
+        </div>
+      )}
+      {verificationStatus.verification_expiry && (
+        <div>
+          <span className="font-weight-bold">Verification Expiration Date</span>
+          : {verificationStatus.verification_expiry}
+        </div>
+      )}
     </div>
     <hr />
   </div>
@@ -50,36 +57,44 @@ const renderVerificationSection = verificationStatus => (
 
 const renderEnrollmentsSection = enrollments => (
   <div>
-    <h3>
-      Program Enrollments
-    </h3>
+    <h3>Program Enrollments</h3>
     {enrollments.map(enrollment => (
-      <div key={enrollment.program_uuid}>
-        <div>Program {enrollment.program_uuid} Enrollments</div>
-        <div> <span>Status: </span> {enrollment.status} </div>
-        <div> <span>Created: </span> {enrollment.created} </div>
-        <div> <span>Last updated: </span> {enrollment.modified} </div>
-        <div> <span>External User Key: </span> {enrollment.external_user_key} </div>
+      <div key={enrollment.program_uuid} className="ml-5">
+        <h4>Program {enrollment.program_uuid} Enrollment</h4>
+        <div> <span className="font-weight-bold">Status</span>: {enrollment.status} </div>
+        <div> <span className="font-weight-bold">Created</span>: {enrollment.created} </div>
+        <div> <span className="font-weight-bold">Last updated</span>: {enrollment.modified} </div>
+        <div>
+          <span className="font-weight-bold">External User Key</span>
+          : {enrollment.external_user_key}
+        </div>
         {enrollment.program_course_enrollments && enrollment.program_course_enrollments.map(
           programCourseEnrollment => (
-            <div key={programCourseEnrollment.course_key}>
-              <br />
+            <div key={programCourseEnrollment.course_key} className="ml-5">
               <h4>Course {programCourseEnrollment.course_key}</h4>
-              <div> <span>Status: </span> {programCourseEnrollment.status} </div>
-              <div> <span>Created: </span> {programCourseEnrollment.created} </div>
-              <div> <span>Last updated: </span> {programCourseEnrollment.modified} </div>
+              <div>
+                <span className="font-weight-bold">Status</span>
+                : {programCourseEnrollment.status}
+              </div>
+              <div>
+                <span className="font-weight-bold">Created</span>
+                : {programCourseEnrollment.created}
+              </div>
+              <div>
+                <span className="font-weight-bold">Last updated</span>
+                : {programCourseEnrollment.modified}
+              </div>
               {programCourseEnrollment.course_enrollment && (
-                <div>
-                  <br />
+                <div className="ml-5">
                   <h4>Linked course enrollment</h4>
-                  <div><span>Course ID: </span>
-                    {programCourseEnrollment.course_enrollment.course_id}
+                  <div><span className="font-weight-bold">Course ID</span>
+                    : {programCourseEnrollment.course_enrollment.course_id}
                   </div>
-                  <div> <span>Is Active: </span>
-                    {programCourseEnrollment.course_enrollment.is_active}
+                  <div> <span className="font-weight-bold">Is Active</span>
+                    : {String(programCourseEnrollment.course_enrollment.is_active)}
                   </div>
-                  <div> <span>Mode / Track: </span>
-                    {programCourseEnrollment.course_enrollment.mode}
+                  <div> <span className="font-weight-bold">Mode / Track</span>
+                    : {programCourseEnrollment.course_enrollment.mode}
                   </div>
                 </div>
               )}
